@@ -14,6 +14,7 @@ linters:
     - gofmt
     - gofumpt
     - gosimple
+    - gosec
     - govet
     - ineffassign
     - intrange
