@@ -1,0 +1,30 @@
+name: Security Scan and Lint
+
+on:
+  push:
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - 'Dockerfile'
+
+  pull_request:
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - 'Dockerfile'
+
+jobs:
+  trivy-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Trivy scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'  # Full file system scan for Dockerfile, Go modules, etc.
+          ignore-unfixed: true
+          exit-code: '1'
+          severity: 'HIGH,CRITICAL'
