@@ -23,17 +23,9 @@ jobs:
     - name: Save Docker image to tarball
       run: |
         docker save test-ollama:test | gzip > image.tar.gz
-
-    - name: Upload Docker image to VirusTotal
-      run: |
-        curl -s --request POST "https://www.virustotal.com/api/v3/files" \
-          --header "x-apikey: ${{ secrets.VT_API_KEY }}" \
-          --form "file=@image.tar.gz" | jq '.data.id' > result.json
-
-    - name: Get VirusTotal scan report
-      run: |
-        FILE_ID=$(jq -r '.data.id' result.json)
-        echo "File ID: $FILE_ID"
-
-        curl -s --request GET "https://www.virustotal.com/api/v3/files/$FILE_ID" \
-          --header "x-apikey: ${{ secrets.VT_API_KEY }}" | jq '.data.attributes.last_analysis_stats'
+    - name: VirusTotal Scan
+        uses: crazy-max/ghaction-virustotal@v4
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: |
+            ./image.tar.gz
