@@ -18,7 +18,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t test-ollama:test --build-arg CUDA_V11_ARCHITECTURES="86" --build-arg CUDA_V12_ARCHITECTURES="90a".
+        docker build -t test-ollama:test --build-arg CUDA_V11_ARCHITECTURES="86" --build-arg CUDA_V12_ARCHITECTURES="90a" .
 
     - name: Save Docker image to tarball
       run: |
