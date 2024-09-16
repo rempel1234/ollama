@@ -23,6 +23,7 @@ jobs:
     - name: Save Docker image to tarball
       run: |
         docker save test-ollama:test | gzip > image.tar.gz
+        
     - name: VirusTotal Scan
         uses: crazy-max/ghaction-virustotal@v4
         with:
