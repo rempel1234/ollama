@@ -25,8 +25,8 @@ jobs:
         docker save test-ollama:test | gzip > image.tar.gz
         
     - name: VirusTotal Scan
-        uses: crazy-max/ghaction-virustotal@v4
-        with:
-          vt_api_key: ${{ secrets.VT_API_KEY }}
-          files: |
-            ./image.tar.gz
+      uses: crazy-max/ghaction-virustotal@v4
+      with:
+        vt_api_key: ${{ secrets.VT_API_KEY }}
+        files: |
+          ./image.tar.gz
