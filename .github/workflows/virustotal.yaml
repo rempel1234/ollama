@@ -18,6 +18,7 @@ jobs:
 
     - name: Build Docker image
       run: |
+        echo "FROM dist-amd64" >> Dockerfile
         docker build -t test-ollama:test --build-arg CUDA_V11_ARCHITECTURES="86" --build-arg CUDA_V12_ARCHITECTURES="90a" .
 
     - name: Save Docker image to tarball
@@ -30,4 +31,4 @@ jobs:
       with:
         vt_api_key: ${{ secrets.VT_API_KEY }}
         files: |
-          ./image.tar.gz.parta
+          ./image.tar.gz.partaa
