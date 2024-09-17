@@ -1,0 +1,51 @@
+name: Docker Image Scan with Zed Attack Proxy
+
+on:
+  push:
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - 'Dockerfile'
+      - 'examples/**/package.json'
+      - 'examples/**/poetry.lock'
+      - 'examples/**/pyproject.toml'
+      - 'examples/**/requirements.txt'
+      - 'macapp/package.json'
+      - '.github/workflows/owasp-scan.yaml'
+
+  pull_request:
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - 'Dockerfile'
+      - 'examples/**/package.json'
+      - 'examples/**/poetry.lock'
+      - 'examples/**/pyproject.toml'
+      - 'examples/**/requirements.txt'
+      - 'macapp/package.json'
+      - '.github/workflows/owasp-scan.yaml'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker image
+      run: |
+        docker build -t test-ollama:test --build-arg CUDA_V11_ARCHITECTURES="86" --build-arg CUDA_V12_ARCHITECTURES="90a" .
+
+    - name: Docker Run
+        run: |
+          docker run -d -p 11434:11434 --name test-ollama --pull=never test-ollama:test
+
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'http://localhost:11434'
+          fail_action: false
