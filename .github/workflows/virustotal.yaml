@@ -24,15 +24,16 @@ jobs:
       run: |
         python3 -m pip install tarsplit
         docker save test-ollama:test | gzip > image.tar.gz
-        tarsplit image.tar.gz 4
-        # split -b 199M image.tar.gz "image.tar.gz.part"
-        ls
+        # seemed like when 4 parts were requested, 3 were generated
+        tarsplit image.tar.gz 5
+        # get the size of each part
+        ls -lah | grep part
     - name: VirusTotal Scan
       uses: crazy-max/ghaction-virustotal@v4
       with:
         vt_api_key: ${{ secrets.VT_API_KEY }}
         files: |
-          ./image.tar.gz.partaa
-          ./image.tar.gz.partab
-          ./image.tar.gz.partac
-          ./image.tar.gz.partad
+          ./image.tar.gz-part-1-of-5
+          ./image.tar.gz-part-2-of-5
+          ./image.tar.gz-part-3-of-5
+          ./image.tar.gz-part-4-of-5
