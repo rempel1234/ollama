@@ -22,8 +22,10 @@ jobs:
 
     - name: Save Docker image to tarball
       run: |
+        python3 -m pip install tarsplit
         docker save test-ollama:test | gzip > image.tar.gz
-        split -b 199M image.tar.gz "image.tar.gz.part"
+        tarsplit image.tar.gz 4
+        # split -b 199M image.tar.gz "image.tar.gz.part"
         ls
     - name: VirusTotal Scan
       uses: crazy-max/ghaction-virustotal@v4
