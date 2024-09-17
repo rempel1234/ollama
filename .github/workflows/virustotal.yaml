@@ -2,8 +2,26 @@ name: Docker Image Scan with VirusTotal
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - 'Dockerfile'
+      - 'examples/**/package.json'
+      - 'examples/**/poetry.lock'
+      - 'examples/**/pyproject.toml'
+      - 'examples/**/requirements.txt'
+      - 'macapp/package.json'
+
+  pull_request:
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - 'Dockerfile'
+      - 'examples/**/package.json'
+      - 'examples/**/poetry.lock'
+      - 'examples/**/pyproject.toml'
+      - 'examples/**/requirements.txt'
+      - 'macapp/package.json'
 
 jobs:
   scan:
